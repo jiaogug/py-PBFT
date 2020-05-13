@@ -278,12 +278,6 @@ class node(object):
         key = self.key_dict[self.id]
         m = self.bank.process_request(key, self.id, seq, client_req, req.inner.view)
         record(self.commitlog, "msg: %s, proposed by: %d" % (client_req.inner.msg[:12], client_req.inner.id))
-        if self.bank.balance > SAVING_GOAL:
-            # it's cool to have money!
-            flag = open('flag.txt','r').read()
-            open('passed','w').write(flag)
-            self.broadcast_to_nodes(self.create_request("FLAG", -1, flag,))
-        time.sleep(0.05)
         if self.max_requests and seq > self.max_requests:
             return
         client_sock = socket.socket()
